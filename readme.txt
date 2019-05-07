@@ -7,3 +7,5 @@ miao!miao!
 Git has a mutable index called stage.
 
 Creating a new branch named dev.
+
+delete dev and created a featurel
