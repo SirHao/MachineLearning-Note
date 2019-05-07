@@ -8,4 +8,8 @@ Git has a mutable index called stage.
 
 Creating a new branch named dev.
 
+<<<<<<< HEAD
 the new brach is change to master after add sthss
+=======
+delete dev and created a featurel
+>>>>>>> feature1
