@@ -7,3 +7,5 @@ miao!miao!
 Git has a mutable index called stage.
 
 Creating a new branch named dev.
+
+the new brach is change to master after add sthss
