@@ -28,7 +28,7 @@ $$
              无监督学习\qquad   \Rightarrow 聚类
              \end{array}  
 \right.  
-\end{equation}  
+\end{equation}
 $$
 
 ### 假设空间
