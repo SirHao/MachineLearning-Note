@@ -1,4 +1,4 @@
-# 模型评估与选择
+模型评估与选择
 
 ### 误差·拟合
 
@@ -68,6 +68,10 @@ $$
 $$
 E(f;D)=\int_{x \in \mathcal{D}}(f(x_i)-y_i)^2
 $$
+
+### 性能度量
+
+++++++++++++++++++++
 
 ##### 错误率与精度
 
@@ -161,3 +165,67 @@ $$
 \\
 AUC=1-\mathcal{l}_{rank}
 $$
+
+##### 代价敏感错误率与代价曲
+
+>​       不同类型的错误所造成的后果不同. 例如在医疗诊断中，错误地把患者诊断为健康人与错误地把健康人诊断为患者， 看起来都是犯了"一次错误"但后者的影响是增加了进→步检查的麻烦,前者的后果却可能是丧失了拯救生命的最佳时机.
+
+​		为权衡不同类型错误所造成的不同损失，可为错误赋予**"非均等代价"**。
+
+<img src="img/ml_chaper2/3.png" style="height:170px">
+
+​		若将表 2.2 中的第 0 类作为正类、第 1 类作为反类,令$D^+$  与 $D^-$分别代表样例集 D 的正例子集和反例子集
+
+<img src="img/ml_chaper2/12.png" style="height:190px">
+
+​		则"**代价敏感**"错误率为:
+$$
+E(f;D;cost)=\frac{1}{m}(\sum_{x_{i}\in D^{+}}\mathbb{I}(f(x_{i}) \neq cost_{01})+\sum_{x_{i}\in D^{-}}\mathbb{I}(f(x_{i}) \neq cost_{10}))
+$$
+​		在非均等代价下， ROC 曲线不能直接反映出学习器的期望总体代价，而 "代价曲线"则可达到该目的。
+
+​		代价曲线图的横轴是取值为$ [0， 1] $的正例概率代价;其中 p 是样例为正例的概率;
+
+​		纵轴是取值为 $[0， 1]$ 的归一化代价
+$$
+P(+)cost=\frac{p \times cost_{01}}{p \times cost_{01}+(1-p)\times cost_{10}}   \\
+cost_{norm}=\frac{FNR \times p \times cost_{01}+FPR \times (1-p) \times cost_{10}}{p \times cost_{01}+(1-p)\times cost_{10}}
+$$
+​		 $ROC $线上每一点对应了代价平面上的一条线段，$ROC$中每个点$(TPR，FPR)$在代价平面上绘制 一条从 $(0,FPR)$ 到$ (1,FNR)$ 的线段，围成的面积为学习器的期望总体代价。
+
+<img src="img/ml_chaper2/11.png">
+
+### 比较检验
+
++++++
+
+​		**统计假设检验**为我们进行学习器性能比较提供了重要依据.基于假设检验结果我们可推断出学习器的性能如何。 
+
+##### 假设检验
+
+​		现实任务中我们并不知道学习器的泛化错误率，只能获知其测试错误率 $\hat{\epsilon}$泛化错误率与测试错误率未必相同，但直观上二者接近。因此， 可根据测试错误率估推出泛化错误率的分布。
+
+​		泛化错误率为$\epsilon$的学习器被测得测试错误率为$\hat{\epsilon}$的概率: 
+$$
+P(\hat{\epsilon} ; \epsilon)=\left( \begin{array}{c}{m} \\ {\hat{\epsilon} \times m}\end{array}\right) \epsilon^{ \hat{\epsilon} \times m}(1-\epsilon)^{m-\hat{ \epsilon} \times m}
+$$
+​		给定测试错误率，则解$\partial P(\hat{\epsilon} ; \epsilon) / \partial \epsilon=0$可知，$P(\hat{\epsilon} ; \epsilon) $$在$ $\epsilon=\hat{\epsilon}$时最大，$|\epsilon-\hat{\epsilon}|$增大时$P(\hat{\epsilon} ; \epsilon)$ 减小.这符合二项分布，若 f = 0.3，则 10 个样本中测得 3 个被误分类的概率最大.
+
+ 		我们可使用"二项检验"来对"$\epsilon \leqslant 0.3$"(即"泛化错误率是否不大于 0.3" )这样的假设进行检验.更一般的，考虑假设 "$\epsilon \leqslant \epsilon_{0}$"，则在$1-\alpha$的概率内所能观测到的最大错误率如下式计算.这里 $1-\alpha$ 反映了结论的 "置信度"：
+$$
+\overline{\epsilon}=\max \epsilon \text { s.t. } \sum_{i=\epsilon_{0} \times m+1}^{m} \left( \begin{array}{c}{m} \\ {i}\end{array}\right) \epsilon^{i}(1-\epsilon)^{m-i}<\alpha
+$$
+​		此时若测试错误率 $\hat{\epsilon}$小于临界值 $\overline{\epsilon}$，则根据二项检验可得出结论:在 α 的显著度 下，假设"$\epsilon \leqslant \epsilon_{0}$"不能被拒绝，即能以$1-\alpha$的置信度认为，学习器的泛化错误率不大于$\epsilon_{0}$; 否则该假设可被拒绝，即在 α 的显著度下可认为学习器的泛化错误率大于$\epsilon_{0}$.
+
+​		在很多时候我们并非仅做一次留出法估计，而是通过多次重复留出法或是 交叉验证法等进行多次训练/测试，这样会得到多个测试错误率， 此时可使用 "t 检验"。假定我们得到了 k 个测试错误率，$\hat{\epsilon}_{1}, \hat{\epsilon}_{2}, \ldots, \hat{\epsilon}_{k}$，则平均测试错误率 $\mu$和方差$\sigma^{2}$：
+$$
+\begin{array}{c}{\mu=\frac{1}{k} \sum_{i=1}^{k} \hat{\epsilon}_{i}} \\ {\sigma^{2}=\frac{1}{k-1} \sum_{i=1}^{k}\left(\hat{\epsilon}_{i}-\mu\right)^{2}}\end{array}
+$$
+​		考虑到这 k 个测试错误率可看作泛化错误率$\epsilon$的独立采样，则变量
+$$
+\tau_{t}=\frac{\sqrt{k}\left(\mu-\epsilon_{0}\right)}{\sigma}
+$$
+​		服从自由度为 k-1的 t 分布，如图 2.7 所示.
+
+<img src="img/ml_chaper2/13.png">
+

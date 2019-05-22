@@ -1,15 +1,4 @@
-Git is a version control system.
-Git is a distributed version control system.
-Git is a distributed version control system.
-Git is free software distributed under the GPL
-This is a Git test2.
-miao!miao!
-Git has a mutable index called stage.
+机器学习西瓜书
+周志华
 
-Creating a new branch named dev.
-
-<<<<<<< HEAD
-the new brach is change to master after add sthss
-=======
-delete dev and created a featurel
->>>>>>> feature1
+缓慢更新中...（但一定会更新的！！）
