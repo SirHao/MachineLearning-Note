@@ -227,5 +227,5 @@ $$
 $$
 ​		服从自由度为 k-1的 t 分布，如图 2.7 所示.
 
-<img src="img/ml_chaper2/13.png">
+<img src="img/ml_chaper2/13.png" style="height:180px">
 
